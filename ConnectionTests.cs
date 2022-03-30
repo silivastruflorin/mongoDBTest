@@ -70,11 +70,11 @@ namespace mongoDBTest
 
                 //wait until syncronization si done before going out of scope
                 Console.WriteLine(" Waits for the Realms.Sync.Session to finish all pending uploads... \n");
-                session.WaitForUploadAsync();
+                await session.WaitForUploadAsync();
 
                 //Read the entire collection
                 var allPatientRecords = realmInstance.All<record>();
-                Console.WriteLine("I am reading from DB \n");
+                Console.WriteLine("I am reading from DB  \n");
                 foreach (var result in allPatientRecords)
                 {
                     Console.WriteLine("Name: {0}, \n _partitionKey:{1}, \n Id:{2} \n  ", result.Name, result.PartitionKey, result.Id);
@@ -89,6 +89,12 @@ namespace mongoDBTest
                     });
 
                 */
+
+                var filteredResult = allPatientRecords.Filter("contact.address.city == 'NY'");
+                foreach(var property in filteredResult) {
+                    Console.WriteLine(" Filter collection to return patients from NY {0} \n", property.Name);
+                }
+
             }
             catch (RealmFileAccessErrorException ex)
             {
