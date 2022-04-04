@@ -45,28 +45,30 @@ namespace mongoDBTest
                 */
 
                 // Write transaction to the realm
-                //realmInstance.Write(() =>
-                //{
-                //    //Populate schema object with data
-                //    var address = new record_contact_address();
-                //    address.City = "Bucharest";
-                //    address.Street = "Riot Street";
-                //    address.No = 1001;
+                realmInstance.Write(() =>
+                {
+                    //Populate schema object with data
+                    var address = new record_contact_address();
+                    address.City = "Bucharest";
+                    address.Street = "Riot Street";
+                    address.No = 1001;
 
-                //    var contact = new record_contact();
-                //    contact.Address = address;
-                //    contact.Phone = "023-021-13456";
-                    
-                //    // 
-                //    realmInstance.Add(new record()
-                //    {
-                //        Name = "Ion Iliescu",
-                //        PartitionKey = "TestPartitionKey",
-                //        Contact = contact,
-                //        DateOfBirth = {29, 08, 1940 }
+                    var contact = new record_contact();
+                    contact.Address = address;
+                    contact.Phone = "023-021-13456";
 
-                //    });
-                //});
+                    var newPatient = new record();
+                    newPatient.Name = "Test";
+                    newPatient.PartitionKey = "TestPartitionKey";
+                    newPatient.Contact = contact ;
+                    newPatient.DateOfBirth.Add(1);
+                    newPatient.DateOfBirth.Add(12);
+                    newPatient.DateOfBirth.Add(1999);
+                   
+
+                    // 
+                    realmInstance.Add(newPatient);
+                });
 
                 //wait until syncronization si done before going out of scope
                 Console.WriteLine(" Waits for the Realms.Sync.Session to finish all pending uploads... \n");
@@ -75,10 +77,10 @@ namespace mongoDBTest
                 //Read the entire collection
                 var allPatientRecords = realmInstance.All<record>();
                 Console.WriteLine("I am reading from DB  \n");
-                foreach (var result in allPatientRecords)
-                {
-                    Console.WriteLine("Name: {0}, \n _partitionKey:{1}, \n Id:{2} \n  ", result.Name, result.PartitionKey, result.Id);
-                }
+                //foreach (var result in allPatientRecords)
+                //{
+                //    Console.WriteLine("Name: {0}, \n _partitionKey:{1}, \n Id:{2} \n  ", result.Name, result.PartitionKey, result.Id);
+                //}
 
                 /*
                      //Removes everything from the realm associated with _partitionKey selected in 'config'
